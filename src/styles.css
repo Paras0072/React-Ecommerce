@@ -7,8 +7,41 @@
     font-family: 'Poppins', sans-serif;
 }
 
+a {
+    text-decoration: none;
+}
 
+a:hover {
+    text-decoration: none;
+}
 
+a:active {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+/* width */
+*::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+*::-webkit-scrollbar-track {
+    background: hsl(233, 14%, 35%)
+}
+
+/* Handle */
+*::-webkit-scrollbar-thumb {
+    background: hsl(235, 24%, 19%)
+}
+
+/* Handle on hover */
+*::-webkit-scrollbar-thumb:hover {
+    background: hsl(233, 14%, 35%)
+}
 
 
 /* Navbar css */
@@ -51,6 +84,8 @@
     height: 30px;
     border-radius: 50%;
 }
+
+
 /* Form Css */
 
 
@@ -109,6 +144,8 @@
 .form-button:hover {
     background-color: #45a049;
 }
+
+
 /* product-list.css */
 
 .product {
@@ -154,4 +191,39 @@
 
 .product .product_right>div button {
     padding: 10px 20px;
+}
+
+
+/* confirm-modal */
+
+.confirm-modal {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(54, 54, 54, 0.692);
+    /* Black w/opacity/see-through */
+}
+
+.confirm-modal .modal-box>h4 {
+    font-weight: 400;
+    color: #fff;
+    font-size: 33px;
+}
+
+.confirm-modal .modal-box>.modal-btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.confirm-modal .modal-box>.modal-btns button {
+    padding: 8px 30px;
 }
