@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -10,65 +11,97 @@ const AllProductsPage = () => {
   const products = useSelector((state) => state.products);
   const cart = useSelector((state) => state.cart);
   const [productList, setProductList] = useState([]);
-  const [is_sort_asc, set_is_sort_asc] = useState(false);
-  const [deletingModalProuct, setdeletingModalProuct] = useState(null);
+  const [isSorted, setIsSorted] = useState(false); // New state for sorting
+ // const [is_sort_asc, set_is_sort_asc] = useState(false);
+  const [deletingModalProduct, setDeletingModalProduct] = useState(null);
 
-  const handleProductEdit = (productId) => {
-    navigate(`/create?id=${productId}`);
-  };
+  const handleProductEdit = useCallback(
+    (productId) => {
+      navigate(`/create?id=${productId}`);
+    },
+    [navigate]
+  );
 
-  const handleProductDelete = (productId) => {
-    // Implement the logic to delete the product
-    // Show alert/notification after deletion
-    dispatch(deleteProduct(productId));
-    setdeletingModalProuct(null);
-    toast("Item Deleted successfully!");
-  };
+  const handleProductDelete = useCallback(
+    (productId) => {
+      dispatch(deleteProduct(productId));
+      setDeletingModalProduct(null);
+      toast("Item Deleted successfully!");
+    },
+    [dispatch]
+  );
 
-  const handleSort = () => {
-    is_sort_asc
-      ? setProductList(productList.slice().sort((a, b) => b.price - a.price))
-      : setProductList(productList.slice().sort((a, b) => a.price - b.price));
+  // const handleSort = useCallback(() => {
+  //   set_is_sort_asc((prev) => !prev);
+  // }, []);
 
-    set_is_sort_asc(!is_sort_asc);
-  };
-
-  const handleAddToCart = (product) => {
-    // Implement the logic to add the product to the cart
-    dispatch(addToCart(product));
-    toast("Item Added successfully!");
-  };
-
-  const handleRemoveFromCart = (id) => {
-    // Implement the logic to add the product to the cart
-    dispatch(deleteFromCart(id));
-    toast("Item Removed successfully!");
-  };
+  // Function to add product in cart
+  const handleAddToCart = useCallback(
+    (product) => {
+      dispatch(addToCart(product));
+      toast("Item Added successfully!");
+    },
+    [dispatch]
+  );
+// Function o remove product from cart
+  const handleRemoveFromCart = useCallback(
+    (id) => {
+      dispatch(deleteFromCart(id));
+      toast("Item Removed successfully!");
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
     setProductList(products);
   }, [products]);
 
+  
+  // const sortedProductList = useMemo(() => {
+  //   return productList
+  //     .slice()
+  //     .sort((a, b) => (is_sort_asc ? a.price - b.price : b.price - a.price));
+  // }, [productList, is_sort_asc]);
+
+
+
+  // Function to handle sorting
+  const handleSort = () => {
+    const sortedProducts = productList
+      .slice()
+      .sort((a, b) => a.price - b.price);
+    setProductList(sortedProducts);
+    setIsSorted(true); // Mark sorting as active
+  };
+  // Function to remove sorting and reset the product list
+  const handleRemoveSort = () => {
+    setProductList(products);
+    setIsSorted(false); // Mark sorting as inactive
+  };
+   useEffect(() => {
+     setProductList(products); // Initialize product list from Redux store
+   }, [products]);
+
   return (
     <div style={{ margin: 20 }}>
       {/* Delete modal confirmation */}
-      {deletingModalProuct && (
+      {deletingModalProduct && (
         <div className="confirm-modal">
           <div className="modal-box">
             <h4>
-              Are you sure you want to Delete "{deletingModalProuct?.name}"
+              Are you sure you want to delete "{deletingModalProduct?.name}"?
             </h4>
             <div className="modal-btns">
               <button
                 onClick={() => {
-                  handleProductDelete(deletingModalProuct?.id);
+                  handleProductDelete(deletingModalProduct?.id);
                 }}
               >
                 Yes
               </button>
               <button
                 onClick={() => {
-                  setdeletingModalProuct(null);
+                  setDeletingModalProduct(null);
                 }}
               >
                 No
@@ -77,18 +110,59 @@ const AllProductsPage = () => {
           </div>
         </div>
       )}
-      {/* Render the product list */}
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+
+      {/* Sort Button */}
+      {/* <div style={{ display: "flex", justifyContent: "flex-end" }}>
         <button
           style={{ padding: "10px 20px", marginBottom: 20 }}
           onClick={handleSort}
         >
           Sort by Price
         </button>
+      </div> */}
+      
+      
+      {/* Sort Button with Cross (X) Button */}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          alignItems: "center",
+        }}
+      >
+        {!isSorted && (
+          <button
+            style={{ padding: "10px 20px", marginBottom: 20 }}
+            onClick={handleSort}
+          >
+            Sort by Price
+          </button>
+        )}
+        {isSorted && (
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <button style={{ padding: "10px 20px", marginBottom: 20 }} disabled>
+              Sorted by Price
+            </button>
+            <button
+              style={{
+                background: "transparent",
+                border: "none",
+                fontSize: "18px",
+                marginLeft: "10px",
+                cursor: "pointer",
+              }}
+              onClick={handleRemoveSort}
+            >
+              ❌
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Render the product list */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
         {productList.map((product) => {
-          const isInCart = cart?.find((_) => _.id == product?.id);
+          const isInCart = cart?.find((item) => item.id === product?.id);
           return (
             <div key={product.id} className="product">
               <div className="product_left">
@@ -105,7 +179,7 @@ const AllProductsPage = () => {
                   <button onClick={() => handleProductEdit(product.id)}>
                     Edit
                   </button>
-                  <button onClick={() => setdeletingModalProuct(product)}>
+                  <button onClick={() => setDeletingModalProduct(product)}>
                     Delete
                   </button>
                   <button

@@ -1,8 +1,10 @@
+// Form to add New Products 
+
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { createProduct, updateProduct } from "../store/reducer";
-
+import { toast } from "react-toastify";
 function generateId() {
   const alphanumeric =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -60,6 +62,7 @@ const Form = () => {
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      toast.error("Please fill in all required fields!"); // Error notification
     } else {
       // Submit logic goes here
       if (id) {
@@ -72,6 +75,7 @@ const Form = () => {
             },
           })
         );
+        toast.success("Product updated successfully!"); // Success notification for update
         navigate("/");
       } else {
         dispatch(
@@ -80,6 +84,7 @@ const Form = () => {
             ...formData,
           })
         );
+        toast.success("Product added successfully!"); // Success notification for add
       }
 
       // Reset form data
@@ -164,7 +169,9 @@ const Form = () => {
         </div>
         <button type="submit" className="form-button">
           Submit
+          
         </button>
+       
         {id && (
           <button
             onClick={() => {

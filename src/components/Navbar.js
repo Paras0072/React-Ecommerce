@@ -1,11 +1,18 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom"; // for navigating 
+import { useSelector } from "react-redux";
 const NavBar = () => {
   const navigate = useNavigate();
   const navigateHandle = (path) => {
     navigate(path);
   };
+  
+  // Access the cart items from Redux store
+  const cart = useSelector((state) => state.cart);
+
+  // Calculate the total number of items in the cart
+  const cartCount = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+
   return (
     <nav className="navbar">
       <div className="navbar-left">
@@ -13,21 +20,21 @@ const NavBar = () => {
           <li style={{ fontWeight: "600", fontSize: 21 }}>eCommerce</li>
           <li
             onClick={() => {
-              navigateHandle("/");
+              navigateHandle("/"); // for navigating to all products page
             }}
           >
             Products
           </li>
           <li
             onClick={() => {
-              navigateHandle("/cart");
+              navigateHandle("/cart"); // for navigating to cart
             }}
           >
-            Cart
+            Cart ({cartCount})
           </li>
           <li
             onClick={() => {
-              navigateHandle("/create");
+              navigateHandle("/create"); // for navigating to the form for adding product
             }}
           >
             Add a Product +
@@ -43,3 +50,11 @@ const NavBar = () => {
 };
 
 export default NavBar;
+
+
+
+
+
+
+
+

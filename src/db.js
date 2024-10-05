@@ -1,3 +1,6 @@
+// Mock Data 
+
+
 export const Seed_data_storage_key = "@coding_ninja_ecom_seed_data_key_1413er3";
 export const Cart_storage_key = "@coding_ninja_ecom_cart_storage_key_1413er3";
 export const Dummy_product_list = [

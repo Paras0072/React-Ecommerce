@@ -28,7 +28,7 @@ const CartPage = () => {
                   <p>Price : {item.price}</p>
                   <button
                     onClick={() => {
-                      removeFromCart(item?.id);
+                      removeFromCart(item?.id); // to remove item from cart
                     }}
                     style={{ padding: "1px 14px", marginTop: 12 }}
                   >

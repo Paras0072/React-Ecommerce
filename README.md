@@ -1,3 +1,29 @@
+# Key Features
+
+## Navbar:
+
+- Display cart items count.
+- Show relevant navigation links. All Products Page:
+- Fetch and display a list of products from the API.
+- Inline editing of each product by clicking on the "Edit" button.
+- Show alerts/notifications upon finishing the product edit.
+- Individual product deletion with corresponding alerts/notifications. Sorting Functionality:
+- Implement a sort button to sort products by "price".
+- Display a cross button to remove the sorting. Add to Cart:
+- Add a button to add a product to the cart. Create Page:
+- Allow users to add new products to the database.
+- Show alerts/notifications upon successfully adding a product. Product Detail Page:
+- Show all the details of a selected product.
+- Provide a button to add the product to the cart. Cart Page:
+- Display all items in the cart. Error and Success Handling:
+- Handle errors and show appropriate alerts/notifications.
+- Handle API response errors and display corresponding alerts/notifications. React Router (optional):
+- Use React Router for navigation (not mandatory). Redux (mandatory):
+- Utilize Redux for state management, providing a centralized store.
+- Ensure Redux data persistence, maintaining cart items and other data after page refresh.
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

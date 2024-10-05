@@ -145,6 +145,14 @@ a:visited {
     background-color: #45a049;
 }
 
+/* crossbutton.css */
+.cross-button {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: 10px;
+}
 
 /* product-list.css */
 
